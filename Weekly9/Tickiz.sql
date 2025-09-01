@@ -152,3 +152,47 @@ CREATE TABLE order_history (
     status order_status,
     created_at TIMESTAMP
 );
+
+DROP TABLE IF EXISTS movie_genres,
+movie_categories,
+genres,
+categories,
+movies CASCADE;
+
+CREATE TABLE movies (
+    id SERIAL PRIMARY KEY,
+    tmdb_id INT UNIQUE,
+    title VARCHAR(255),
+    overview TEXT,
+    release_date DATE,
+    runtime INT,
+    poster_path VARCHAR(255),
+    backdrop_path VARCHAR(255),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- GENRES
+CREATE TABLE genres (
+    id SERIAL PRIMARY KEY,
+    tmdb_id INT UNIQUE,
+    name VARCHAR(100)
+);
+
+CREATE TABLE movie_genres (
+    movie_id INT REFERENCES movies (id) ON DELETE CASCADE,
+    genre_id INT REFERENCES genres (id) ON DELETE CASCADE,
+    PRIMARY KEY (movie_id, genre_id)
+);
+
+-- CATEGORIES
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE movie_categories (
+    movie_id INT REFERENCES movies (id) ON DELETE CASCADE,
+    category_id INT REFERENCES categories (id) ON DELETE CASCADE,
+    PRIMARY KEY (movie_id, category_id)
+);
